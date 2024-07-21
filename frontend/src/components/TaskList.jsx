@@ -127,7 +127,7 @@ const TaskList = () => {
             sx={{ width: isMobile ? '410px' : '100%' }}
           />
           {editTask && (
-            <div style={{ marginTop: 50, marginBottom: 20 }}>
+            <div style={{ marginTop: 50, marginBottom: 50 }}>
               <EditTaskForm
                 task={editedFields}
                 onSaveChanges={handleSaveChanges}
