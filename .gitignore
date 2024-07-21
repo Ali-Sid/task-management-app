@@ -1,0 +1,16 @@
+# Backend
+server/venv/
+server/__pycache__/
+server/*.pyc
+
+# Frontend
+frontend/node_modules/
+frontend/build/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE-specific files
+.vscode/
+.idea/
