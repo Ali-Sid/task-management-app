@@ -1,6 +1,6 @@
-# app/schemas.py
 from pydantic import BaseModel
 from typing import Optional
+from datetime import datetime
 
 class TaskBase(BaseModel):
     title: str
@@ -15,7 +15,7 @@ class TaskUpdate(TaskBase):
 
 class Task(TaskBase):
     id: int
-    created_at: str
+    created_at: datetime
 
     class Config:
-        from_attributes = True
+        orm_mode = True

@@ -10,9 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
+    "@mui/joy": "^5.0.0-beta.48",
+    "@mui/material": "^5.16.4",
+    "@mui/x-data-grid": "^7.11.0",
     "axios": "^1.7.2",
     "framer-motion": "^11.3.8",
     "react": "^18.3.1",
