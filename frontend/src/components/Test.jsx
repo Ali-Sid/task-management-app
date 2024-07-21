@@ -1,48 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
+import axios from 'axios';
 import {
   Button,
-  CircularProgress,
+  TextField,
+  Grid,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
+  Typography,
   useMediaQuery,
+  CircularProgress,
 } from '@mui/material';
 import TaskItem from './TaskItem';
-import EditTaskForm from './EditTaskForm'; // Import the new EditTaskForm component
+import EditTaskForm from './EditTaskForm';
 
-const TaskList = () => {
-  const isMobile = useMediaQuery('(max-width:600px)');
-  const [tasks, setTasks] = useState([]);
-  const [editTask, setEditTask] = useState(null);
-  const [editedFields, setEditedFields] = useState({
-    title: '',
-    description: '',
-    status: '',
-  });
+const TaskList = ({ tasks, fetchTasks }) => {
   const [loading, setLoading] = useState(false);
-
-  const fetchTasks = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get('http://localhost:8000/tasks');
-      setTasks(response.data);
-    } catch (error) {
-      console.error('Error fetching tasks:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+  const isMobile = useMediaQuery("(max-width:600px)");
+  const [editTask, setEditTask] = useState(null);
+  const [editedFields, setEditedFields] = useState({});
 
   const handleEditClick = (task) => {
     setEditTask(task);
-    setEditedFields({
-      title: task.title,
-      description: task.description,
-      status: task.status,
-    });
+    setEditedFields({ ...task });
   };
 
   const handleDeleteClick = async (taskId) => {
@@ -54,30 +36,16 @@ const TaskList = () => {
     }
   };
 
-  const handleStatusChange = async (id, currentStatus) => {
-    const newStatus =
-      currentStatus === 'todo'
-        ? 'In Progress'
-        : currentStatus === 'In Progress'
-        ? 'Done'
-        : 'todo';
-    try {
-      await axios.put(`http://localhost:8000/tasks/${id}`, {
-        status: newStatus,
-      });
-      fetchTasks();
-    } catch (error) {
-      console.error('Error updating task status:', error);
-    }
-  };
-
   const handleSaveChanges = async () => {
     try {
+      setLoading(true);
       await axios.put(`http://localhost:8000/tasks/${editTask.id}`, editedFields);
       fetchTasks();
       setEditTask(null);
     } catch (error) {
       console.error('Error updating task:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -85,11 +53,6 @@ const TaskList = () => {
     const { name, value } = e.target;
     setEditedFields((prev) => ({ ...prev, [name]: value }));
   };
-
-  const rowsWithIndex = tasks.map((task, index) => ({
-    ...task,
-    index: index + 1,
-  }));
 
   const columns = [
     { field: 'index', headerName: '#', width: 90 },
@@ -100,36 +63,36 @@ const TaskList = () => {
       field: 'actions',
       headerName: 'Actions',
       width: 200,
-      display: "flex",
-      alignItems: "center",
       renderCell: (params) => (
         <TaskItem
           task={params.row}
           onEditClick={handleEditClick}
           onDeleteClick={handleDeleteClick}
-          onStatusChange={handleStatusChange}
         />
       ),
     },
   ];
 
   return (
-    <div style={{ height: 400, width: '100%', margin: isMobile && '0 auto' }}>
+    <div style={{ height: 400, width: '100%', margin: isMobile && "0 auto" }}>
       {loading ? (
         <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
       ) : (
         <>
           <DataGrid
-            rows={rowsWithIndex}
+            rows={tasks}
             columns={columns}
             pageSize={5}
             rowsPerPageOptions={[5]}
-            sx={{ width: isMobile ? '410px' : '100%' }}
+            sx={{ width: isMobile ? "410px" : "100%" }}
           />
           {editTask && (
             <div style={{ marginTop: 50, marginBottom: 20 }}>
+              <Typography variant="h6" fontWeight="bold" fontSize={isMobile ? "18px" : "24px"}>
+                Edit Task
+              </Typography>
               <EditTaskForm
-                task={editedFields}
+                task={editTask}
                 onSaveChanges={handleSaveChanges}
                 onChange={handleChange}
               />

@@ -15,6 +15,7 @@ def create_task(db: Session, task: TaskCreate):
     db.refresh(db_task)
     return db_task
 
+
 def update_task(db: Session, task_id: int, task: TaskUpdate):
     db_task = get_task(db, task_id)
     if db_task:

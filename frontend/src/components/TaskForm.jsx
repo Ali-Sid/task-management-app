@@ -1,23 +1,40 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Textarea } from "@chakra-ui/react";
-import { Box, Button, Input, useMediaQuery } from "@mui/material";
+import { Alert, AlertTitle, Box, Button, Input, useMediaQuery } from "@mui/material";
 import { AddIcon } from "@chakra-ui/icons";
 
 const TaskForm = ({ fetchTasks }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("error");
   const isMobile = useMediaQuery("(max-width:600px)")
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!title.trim() || !description.trim()) {
+      setAlertMessage("Title and Description are required.");
+      setAlertSeverity("error");
+      return;
+    }
+
     try {
       await axios.post("http://localhost:8000/tasks/", { title, description });
       fetchTasks();
       setTitle("");
       setDescription("");
+      setAlertMessage("Task added successfully!");
+      setAlertSeverity("success");
+
+      setTimeout(() => {
+        setAlertMessage("");
+      }, 3000);
     } catch (error) {
       console.error("Error adding task:", error);
+      setAlertMessage("Error adding task. Please try again.");
+      setAlertSeverity("error");
     }
   };
 
@@ -26,6 +43,13 @@ const TaskForm = ({ fetchTasks }) => {
       onSubmit={handleSubmit}
       style={{ display: "flex", flexDirection: "column", gap: "1em" }}
     >
+      {alertMessage && (
+        <Alert severity={alertSeverity} sx={{ marginBottom: "1em" }}>
+          <AlertTitle>{alertSeverity === "error" ? "Error" : "Success"}</AlertTitle>
+          {alertMessage}
+        </Alert>
+      )}
+
       <Input
         variant="outline"
         type="text"
