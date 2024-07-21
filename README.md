@@ -45,7 +45,7 @@ The Task Management App is a full-stack application designed to manage tasks eff
 
 ### Clone the Repository:
 
-`git clone https://github.com/your-username/task-management-app.git cd task-management-app`
+`git clone https://github.com/Ali-Sid/task-management-app.git cd task-management-app`
 
 
 ### Set Up Backend:
