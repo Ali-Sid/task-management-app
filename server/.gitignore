@@ -1,0 +1,23 @@
+# created by virtualenv automatically
+*
+# Ignore Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environment
+venv/
+new_env/
+
+
+# Ignore VSCode settings
+.vscode/
+
+Lib/
+Scripts/
+
+
+# Ignore other OS-specific files
+.DS_Store
+Thumbs.db
