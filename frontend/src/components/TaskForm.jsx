@@ -21,7 +21,8 @@ const TaskForm = ({ fetchTasks }) => {
     }
 
     try {
-      await axios.post("http://localhost:8000/tasks/", { title, description });
+      // await axios.post("http://localhost:8000/tasks/", { title, description });
+      await axios.post("https://task-management-app-y6b9.onrender.com/tasks/", { title, description });
       fetchTasks();
       setTitle("");
       setDescription("");

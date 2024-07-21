@@ -1,32 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { DataGrid } from '@mui/x-data-grid';
-import {
-  Button,
-  CircularProgress,
-  useMediaQuery,
-} from '@mui/material';
-import TaskItem from './TaskItem';
-import EditTaskForm from './EditTaskForm'; // Import the new EditTaskForm component
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { DataGrid } from "@mui/x-data-grid";
+import { Button, CircularProgress, useMediaQuery } from "@mui/material";
+import TaskItem from "./TaskItem";
+import EditTaskForm from "./EditTaskForm"; // Import the new EditTaskForm component
 
 const TaskList = () => {
-  const isMobile = useMediaQuery('(max-width:600px)');
+  const isMobile = useMediaQuery("(max-width:600px)");
   const [tasks, setTasks] = useState([]);
   const [editTask, setEditTask] = useState(null);
   const [editedFields, setEditedFields] = useState({
-    title: '',
-    description: '',
-    status: '',
+    title: "",
+    description: "",
+    status: "",
   });
   const [loading, setLoading] = useState(false);
 
   const fetchTasks = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:8000/tasks');
+      //   const response = await axios.get('http://localhost:8000/tasks');
+      const response = await axios.get(
+        "https://task-management-app-y6b9.onrender.com/tasks"
+      );
       setTasks(response.data);
     } catch (error) {
-      console.error('Error fetching tasks:', error);
+      console.error("Error fetching tasks:", error);
     } finally {
       setLoading(false);
     }
@@ -47,37 +46,48 @@ const TaskList = () => {
 
   const handleDeleteClick = async (taskId) => {
     try {
-      await axios.delete(`http://localhost:8000/tasks/${taskId}`);
+      //   await axios.delete(`http://localhost:8000/tasks/${taskId}`);
+      await axios.delete(
+        `https://task-management-app-y6b9.onrender.com/tasks/${taskId}`
+      );
       fetchTasks();
     } catch (error) {
-      console.error('Error deleting task:', error);
+      console.error("Error deleting task:", error);
     }
   };
 
   const handleStatusChange = async (id, currentStatus) => {
     const newStatus =
-      currentStatus === 'todo'
-        ? 'In Progress'
-        : currentStatus === 'In Progress'
-        ? 'Done'
-        : 'todo';
+      currentStatus === "todo"
+        ? "In Progress"
+        : currentStatus === "In Progress"
+        ? "Done"
+        : "todo";
     try {
-      await axios.put(`http://localhost:8000/tasks/${id}`, {
-        status: newStatus,
-      });
+      await axios.put(
+        `https://task-management-app-y6b9.onrender.com/tasks/${id}`,
+        {
+          //   await axios.put(`http://localhost:8000/tasks/${id}`, {
+          status: newStatus,
+        }
+      );
       fetchTasks();
     } catch (error) {
-      console.error('Error updating task status:', error);
+      console.error("Error updating task status:", error);
     }
   };
 
   const handleSaveChanges = async () => {
     try {
-      await axios.put(`http://localhost:8000/tasks/${editTask.id}`, editedFields);
+        await axios.put(`https://task-management-app-y6b9.onrender.com/tasks/${editTask.id}`, editedFields);
+    //   await axios.put(
+    //     `http://localhost:8000/tasks/${editTask.id}`,
+    //     editedFields
+    //   );
       fetchTasks();
       setEditTask(null);
     } catch (error) {
-      console.error('Error updating task:', error);
+      console.error("Error updating task:", error);
     }
   };
 
@@ -92,13 +102,13 @@ const TaskList = () => {
   }));
 
   const columns = [
-    { field: 'index', headerName: '#', width: 90 },
-    { field: 'title', headerName: 'Title', width: 150 },
-    { field: 'description', headerName: 'Description', width: 300 },
-    { field: 'status', headerName: 'Status', width: 150 },
+    { field: "index", headerName: "#", width: 90 },
+    { field: "title", headerName: "Title", width: 150 },
+    { field: "description", headerName: "Description", width: 300 },
+    { field: "status", headerName: "Status", width: 150 },
     {
-      field: 'actions',
-      headerName: 'Actions',
+      field: "actions",
+      headerName: "Actions",
       width: 200,
       display: "flex",
       alignItems: "center",
@@ -114,9 +124,9 @@ const TaskList = () => {
   ];
 
   return (
-    <div style={{ height: 400, width: '100%', margin: isMobile && '0 auto' }}>
+    <div style={{ height: 400, width: "100%", margin: isMobile && "0 auto" }}>
       {loading ? (
-        <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
+        <CircularProgress sx={{ display: "block", margin: "20px auto" }} />
       ) : (
         <>
           <DataGrid
@@ -124,7 +134,7 @@ const TaskList = () => {
             columns={columns}
             pageSize={5}
             rowsPerPageOptions={[5]}
-            sx={{ width: isMobile ? '410px' : '100%' }}
+            sx={{ width: isMobile ? "410px" : "100%" }}
           />
           {editTask && (
             <div style={{ marginTop: 50, marginBottom: 50 }}>
