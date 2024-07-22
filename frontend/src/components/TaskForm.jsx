@@ -4,7 +4,7 @@ import { Textarea } from "@chakra-ui/react";
 import { Alert, AlertTitle, Box, Button, Input, useMediaQuery } from "@mui/material";
 import { AddIcon } from "@chakra-ui/icons";
 
-const TaskForm = ({ fetchTasks }) => {
+const TaskForm = ({ setTasks }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
@@ -21,9 +21,9 @@ const TaskForm = ({ fetchTasks }) => {
     }
 
     try {
-      // await axios.post("http://localhost:8000/tasks/", { title, description });
-      await axios.post("https://task-management-app-y6b9.onrender.com/tasks/", { title, description });
-      fetchTasks();
+      // const response = await axios.post("http://localhost:8000/tasks/", { title, description });
+      const response = await axios.post("https://task-management-app-y6b9.onrender.com/tasks/", { title, description });
+      setTasks((prevTasks) => [...prevTasks, response.data]);
       setTitle("");
       setDescription("");
       setAlertMessage("Task added successfully!");

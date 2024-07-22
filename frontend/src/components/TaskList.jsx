@@ -5,9 +5,8 @@ import { Button, CircularProgress, useMediaQuery } from "@mui/material";
 import TaskItem from "./TaskItem";
 import EditTaskForm from "./EditTaskForm"; // Import the new EditTaskForm component
 
-const TaskList = () => {
+const TaskList = ({ tasks, setTasks }) => {
   const isMobile = useMediaQuery("(max-width:600px)");
-  const [tasks, setTasks] = useState([]);
   const [editTask, setEditTask] = useState(null);
   const [editedFields, setEditedFields] = useState({
     title: "",
@@ -50,7 +49,7 @@ const TaskList = () => {
       await axios.delete(
         `https://task-management-app-y6b9.onrender.com/tasks/${taskId}`
       );
-      fetchTasks();
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
     } catch (error) {
       console.error("Error deleting task:", error);
     }
@@ -71,7 +70,11 @@ const TaskList = () => {
           status: newStatus,
         }
       );
-      fetchTasks();
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === id ? { ...task, status: newStatus } : task
+        )
+      );
     } catch (error) {
       console.error("Error updating task status:", error);
     }
@@ -79,12 +82,19 @@ const TaskList = () => {
 
   const handleSaveChanges = async () => {
     try {
-        await axios.put(`https://task-management-app-y6b9.onrender.com/tasks/${editTask.id}`, editedFields);
-    //   await axios.put(
-    //     `http://localhost:8000/tasks/${editTask.id}`,
-    //     editedFields
-    //   );
-      fetchTasks();
+      await axios.put(
+        `https://task-management-app-y6b9.onrender.com/tasks/${editTask.id}`,
+        editedFields
+      );
+        // await axios.put(
+        //   `http://localhost:8000/tasks/${editTask.id}`,
+        //   editedFields
+        // );
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === editTask.id ? { ...task, ...editedFields } : task
+        )
+      );
       setEditTask(null);
     } catch (error) {
       console.error("Error updating task:", error);

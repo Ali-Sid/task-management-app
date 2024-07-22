@@ -15,7 +15,8 @@ function App() {
 
   const fetchTasks = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/tasks');
+      // const response = await axios.get('http://localhost:8000/tasks');
+      const response = await axios.get('https://task-management-app-y6b9.onrender.com/tasks');
       setTasks(response.data);
     } catch (error) {
       console.error('Error fetching tasks:', error);
@@ -24,8 +25,8 @@ function App() {
   return (
     <div className="App">
       <h2>Task Management App</h2>
-      <TaskForm fetchTasks={fetchTasks} />
-      <TaskList tasks={tasks} fetchTasks={fetchTasks} />
+      <TaskForm setTasks={setTasks} />
+      <TaskList tasks={tasks} setTasks={setTasks} />
     </div>
   );
 }
