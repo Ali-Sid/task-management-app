@@ -54,7 +54,6 @@ Navigate to the server directory.
 
 Create a virtual environment and install dependencies:
 
-```python -m venv venv ```
 ```source venv/bin/activate # On Windows use .\Scripts\activate ```
 ```pip install -r requirements.txt```
 
