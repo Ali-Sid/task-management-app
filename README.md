@@ -22,7 +22,7 @@ The Task Management App is a full-stack application designed to manage tasks eff
 
 ### Deployment
 
-- **Render**: Cloud platform for deploying backend services.
+- **Google Cloud Run**: Cloud service for deploying backend services. (A managed compute platform that enables you to run stateless containers invocable via HTTP requests)
 - **Vercel**: Cloud platform for building and deploying frontend applications.
 
 ## Features
